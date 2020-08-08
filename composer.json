@@ -1,0 +1,39 @@
+{
+  "name": "kafkiansky/service-locator-interrupter",
+  "description": "Psalm plugin for Laravel that interrupt service locator calls.",
+  "license": "MIT",
+  "type": "psalm-plugin",
+  "authors": [
+    {
+      "name": "Vadim Zanfir",
+      "email": "vadimzanfir@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Kafkiansky\\ServiceLocatorInterrupter\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kafkiansky\\ServiceLocatorInterrupter\\Tests\\": "tests"
+    }
+  },
+  "require": {
+    "php": "^7.1",
+    "ext-simplexml": "*",
+    "vimeo/psalm": "^3.13"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0",
+    "weirdan/codeception-psalm-module": "^0.8.0"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "psalm": {
+      "pluginClass": "Kafkiansky\\ServiceLocatorInterrupter\\Plugin"
+    }
+  }
+}
