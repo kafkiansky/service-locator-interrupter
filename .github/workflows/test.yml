@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - develop
-
+      - master
 
 jobs:
   tests:
@@ -17,30 +17,30 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.1, 7.2, 7.3, 7.4]
+        php: [7.2, 7.3]
         stability: [prefer-lowest, prefer-stable]
 
-      name: PHP ${{ matrix.php }} / ${{ matrix.stability }}
+    name: PHP ${{ matrix.php }} / ${{ matrix.stability }}
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
 
-        - name: Cache dependencies
-          uses: actions/cache@v1
-          with:
-            path: ~/.composer/cache/files
-            key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: ${{ matrix.php }}
-            extension-csv: mbstring, xdebug
-            coverage: xdebug
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extension-csv: mbstring, xdebug
+          coverage: xdebug
 
-        - name: Install dependencies
-          run: composer update --prefer-dist --no-interaction --no-suggest
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-suggest
 
-        - name: Validate composer.json
-          run: composer validate
+      - name: Validate composer.json
+        run: composer validate
