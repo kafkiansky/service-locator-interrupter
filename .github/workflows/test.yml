@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.2, 7.3]
+        php: [7.1, 7.2, 7.3, 7.4]
         stability: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} / ${{ matrix.stability }}
@@ -44,3 +44,12 @@ jobs:
 
       - name: Validate composer.json
         run: composer validate
+
+      - name: Execute tests
+        run: composer test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml

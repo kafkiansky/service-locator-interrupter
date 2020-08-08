@@ -25,6 +25,7 @@
     "vimeo/psalm": "^3.13"
   },
   "require-dev": {
+    "laravel/framework": "^7.24",
     "phpunit/phpunit": "^8.0",
     "weirdan/codeception-psalm-module": "^0.8.0"
   },
@@ -35,5 +36,14 @@
     "psalm": {
       "pluginClass": "Kafkiansky\\ServiceLocatorInterrupter\\Plugin"
     }
+  },
+  "scripts": {
+    "test": [
+      "@codeception"
+    ],
+    "codeception": [
+      "codecept build",
+      "codecept run -v -g laravel-interrupter"
+    ]
   }
 }

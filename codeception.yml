@@ -1,0 +1,13 @@
+namespace: Psalm\PhpUnitPlugin\Tests
+
+paths:
+  tests: tests/acceptance
+  output: tests/acceptance/_output
+  data: tests/acceptance/_data
+  support: tests/acceptance/_support
+
+actor_suffix: Tester
+
+extensions:
+  enabled:
+    - Codeception\Extension\RunFailed
