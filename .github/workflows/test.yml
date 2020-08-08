@@ -8,9 +8,6 @@ on:
   pull_request:
     branches:
       - develop
-  merge_request:
-    - master
-    - develop
 
 
 jobs:
