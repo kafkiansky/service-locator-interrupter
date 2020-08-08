@@ -25,8 +25,7 @@ final class PreventContainerInjection implements AfterFunctionLikeAnalysisInterf
         Codebase $codebase,
         array &$fileReplacements = []
     ): void {
-
-        if (! $stmt instanceof Node\Stmt\ClassMethod) {
+        if (!$stmt instanceof Node\Stmt\ClassMethod) {
             return;
         }
 
