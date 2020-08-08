@@ -1,4 +1,4 @@
-# API Client for sms.ru notification service
+# Psalm plugin that prevent service locator calls for Laravel applications.
 
 ![test](https://github.com/kafkiansky/service-locator-interrupter/workflows/test/badge.svg?event=push)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
