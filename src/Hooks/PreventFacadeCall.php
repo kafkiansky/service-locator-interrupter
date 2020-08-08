@@ -25,8 +25,7 @@ final class PreventFacadeCall implements AfterExpressionAnalysisInterface
         Codebase $codebase,
         array &$fileReplacements = []
     ): void {
-
-        if (! $expr instanceof Expr\StaticCall) {
+        if (!$expr instanceof Expr\StaticCall) {
             return;
         }
 

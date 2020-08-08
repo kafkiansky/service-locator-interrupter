@@ -25,7 +25,6 @@ final class PreventHelpersUsage implements AfterEveryFunctionCallAnalysisInterfa
         StatementsSource $statementsSource,
         Codebase $codebase
     ): void {
-
         if (self::isServiceLocatorHelperCall($expr->name->toString())) {
             IssueBuffer::accepts(
                 new HelperUsed(
