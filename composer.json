@@ -30,7 +30,8 @@
     "weirdan/codeception-psalm-module": "^0.8.0"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "process-timeout": 0
   },
   "extra": {
     "psalm": {

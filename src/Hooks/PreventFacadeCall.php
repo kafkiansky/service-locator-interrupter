@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file is part of service-locator-interrupter package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Kafkiansky\ServiceLocatorInterrupter\Hooks;
@@ -46,6 +53,10 @@ final class PreventFacadeCall implements AfterExpressionAnalysisInterface
      */
     private static function isFacadeCall($facadeName): bool
     {
-        return false !== strpos($facadeName, 'Illuminate\Support\Facades');
+        if (false !== strpos($facadeName, 'Illuminate\Support\Facades')) {
+            return true;
+        }
+
+        return class_exists($facadeName) && is_subclass_of($facadeName, 'Illuminate\Support\Facades\Facade');
     }
 }

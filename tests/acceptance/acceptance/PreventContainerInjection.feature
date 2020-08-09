@@ -16,7 +16,7 @@ Feature: Container Injection
         </plugins>
       </psalm>
       """
-  Scenario Outline: Asserting psalm recognizes helpers call and show issue
+  Scenario Outline: Asserting psalm recognizes container injection and show issue
     Given I have the following code
     """
     <?php
@@ -39,3 +39,18 @@ Feature: Container Injection
       |\Illuminate\Contracts\Foundation\Application |
       |\Illuminate\Container\Container              |
       |\Illuminate\Foundation\Application           |
+
+  Scenario: Assert that we can inject other service and psalm no see errors
+    Given I have the following code
+    """
+    <?php
+    final class SomeService
+    {
+      public function do(\Kafkiansky\ServiceLocatorInterrupter\Tests\stubs\Proxima $proxima): void
+      {
+         $proxima->call();
+      }
+    }
+    """
+    When I run Psalm
+    Then I see no errors

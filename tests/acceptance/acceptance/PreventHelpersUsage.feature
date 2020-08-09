@@ -63,3 +63,18 @@ Feature: Helpers call
       |url          | 'localhost'      |
       |validator    | 'di !== helper'  |
       |view         | 'narrow'         |
+
+  Scenario: Assert that we can use simple function and psalm no see errors.
+    Given I have the following code
+    """
+    <?php
+    final class SomeService
+    {
+      public function do(): void
+      {
+         $output = array_map(function (int $el) { return $el + 1; }, [1, 2, 3]);
+      }
+    }
+    """
+    When I run Psalm
+    Then I see no errors
