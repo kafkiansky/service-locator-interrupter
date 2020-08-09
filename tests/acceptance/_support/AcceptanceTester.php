@@ -2,7 +2,8 @@
 namespace Psalm\PhpUnitPlugin\Tests;
 
 /**
- * Inherited Methods
+ * Inherited Methods.
+ *
  * @method void wantToTest($text)
  * @method void wantTo($text)
  * @method void execute($callable)
@@ -15,12 +16,12 @@ namespace Psalm\PhpUnitPlugin\Tests;
  * @method void pause()
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
     /**
-     * Define custom actions here
+     * Define custom actions here.
      */
 }

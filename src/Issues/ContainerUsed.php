@@ -14,10 +14,10 @@ namespace Kafkiansky\ServiceLocatorInterrupter\Issues;
 use Psalm\CodeLocation;
 use Psalm\Issue\PluginIssue;
 
-final class ContainerInjected extends PluginIssue
+final class ContainerUsed extends PluginIssue
 {
     public function __construct(CodeLocation $codeLocation)
     {
-        parent::__construct('Don\'t inject container, inject necessary services.', $codeLocation);
+        parent::__construct('Don\'t use container, inject necessary services.', $codeLocation);
     }
 }
