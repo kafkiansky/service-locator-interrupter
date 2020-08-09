@@ -14,5 +14,6 @@ extensions:
 
 coverage:
   enabled: true
+  remote: true
   include:
     - src/*
