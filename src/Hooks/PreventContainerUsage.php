@@ -28,7 +28,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     /**
      * @var array of container classes that laravel has.
      */
-    private static $containerClasses    = [
+    private static $containerClasses = [
         'Illuminate\Container\Container',
         'Illuminate\Foundation\Application',
     ];
@@ -125,7 +125,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
 
             return $isContainer;
         };
-
 
         if ($classParents = class_parents($resolvedName)) {
             return $instanceOfContainer($classParents, self::$containerClasses);
