@@ -9,7 +9,6 @@ use Illuminate\Contracts\Foundation\Application;
 
 final class ImplementedLaravelApplication implements Application
 {
-
     /**
      * {@inheritdoc}
      */
