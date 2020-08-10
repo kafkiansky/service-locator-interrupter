@@ -53,6 +53,10 @@ final class PreventFacadeCall implements AfterExpressionAnalysisInterface
      */
     private static function isFacadeCall($facadeName): bool
     {
+        if (null === $facadeName) {
+            return false;
+        }
+
         if (false !== strpos($facadeName, 'Illuminate\Support\Facades')) {
             return true;
         }

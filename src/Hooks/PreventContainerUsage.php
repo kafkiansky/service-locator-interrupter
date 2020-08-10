@@ -103,6 +103,10 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
      */
     private static function isServiceLocatorCall($resolvedName): bool
     {
+        if (null === $resolvedName) {
+            return false;
+        }
+
         if (in_array($resolvedName, array_merge(self::$containerClasses, self::$containerInterfaces))) {
             return true;
         }

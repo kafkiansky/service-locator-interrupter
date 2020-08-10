@@ -19,7 +19,7 @@
 Install this package with Composer:
 
 ```bash
-composer require kafkiansky/service-locator-interrupter
+composer require kafkiansky/service-locator-interrupter "1.0.1"
 ```
 
 ## WHY
