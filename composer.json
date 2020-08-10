@@ -44,7 +44,7 @@
     ],
     "codeception": [
       "codecept build",
-      "codecept run --coverage --coverage-xml --coverage-html -v -g laravel-interrupter"
+      "codecept run -v -g laravel-interrupter"
     ]
   }
 }
