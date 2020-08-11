@@ -5,7 +5,6 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/kafkiansky/service-locator-interrupter.svg?style=flat-square)](https://scrutinizer-ci.com/g/kafkiansky/service-locator-interrupter)
 [![StyleCI](https://styleci.io/repos/261290955/shield)](https://styleci.io/repos/261290955)
 [![Total Downloads](https://img.shields.io/packagist/dt/kafkiansky/service-locator-interrupter.svg?style=flat-square)](https://packagist.org/packages/kafkiansky/service-locator-interrupter)
-[![Codecov](https://codecov.io/gh/kafkiansky/service-locator-interrupter/branch/master/graph/badge.svg)](https://codecov.io/gh/kafkiansky/service-locator-interrupter)
 <a href="https://packagist.org/packages/kafkiansky/service-locator-interrupter"><img src="https://poser.pugx.org/kafkiansky/service-locator-interrupter/v/stable" alt="Latest Stable Version"></a>
 
 ### Contents:
