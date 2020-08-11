@@ -43,15 +43,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     ];
 
     /**
-     * @var array of keywords that not be analyzed.
-     */
-    private static $whiteList = [
-        'parent',
-        'self',
-        'static',
-    ];
-
-    /**
      * {@inheritdoc}
      */
     public static function afterStatementAnalysis(
@@ -101,10 +92,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
 
         $classOrInterface = $expr->class->getAttribute('resolvedName');
 
-        if (null === $classOrInterface) {
-            return;
-        }
-
         if (self::isServiceLocatorCall($classOrInterface)) {
             IssueBuffer::accepts(
                 new ContainerUsed(
@@ -122,40 +109,52 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
      */
     private static function isServiceLocatorCall($resolvedName): bool
     {
-        if (in_array($resolvedName, self::$whiteList)) {
-            return false;
-        }
-
         if (in_array($resolvedName, array_merge(self::$containerClasses, self::$containerInterfaces))) {
             return true;
         }
 
-        $instanceOfContainer = static function (array $parents, array $declaringContainers): bool {
-            $isContainer = false;
-
-            foreach ($parents as $parent) {
-                if (in_array($parent, $declaringContainers)) {
-                    $isContainer = true;
-                    break;
-                }
-
-                continue;
-            }
-
-            return $isContainer;
-        };
-
         try {
-            if ($classParents = class_parents($resolvedName)) {
-                return $instanceOfContainer($classParents, self::$containerClasses);
+            $reflection = new \ReflectionClass($resolvedName);
+
+            if (self::instanceOfContainer($reflection->getInterfaceNames(), self::$containerInterfaces)) {
+                return true;
             }
 
-            if ($classImplements = class_implements($resolvedName)) {
-                return $instanceOfContainer($classImplements, self::$containerInterfaces);
+            $parentsClass = [];
+
+            while ($parent = $reflection->getParentClass()) {
+                $parentsClass[] = $parent->getName();
+                $reflection     = $parent;
             }
-        } catch (\Throwable | \Error $error) {
+
+            if (self::instanceOfContainer($parentsClass, self::$containerClasses)) {
+                return true;
+            }
+        } catch (\ReflectionException $exception) {
         }
 
         return false;
+    }
+
+    /**
+     * @param array $parents
+     * @param array $declaringContainers
+     *
+     * @return bool
+     */
+    private static function instanceOfContainer(array $parents, array $declaringContainers): bool
+    {
+        $isContainer = false;
+
+        foreach ($parents as $parent) {
+            if (in_array($parent, $declaringContainers)) {
+                $isContainer = true;
+                break;
+            }
+
+            continue;
+        }
+
+        return $isContainer;
     }
 }
