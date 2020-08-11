@@ -43,6 +43,15 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     ];
 
     /**
+     * @var array of keywords that not be analyzed.
+     */
+    private static $whiteList = [
+        'parent',
+        'self',
+        'static',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public static function afterStatementAnalysis(
@@ -86,7 +95,17 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
             return;
         }
 
-        if (self::isServiceLocatorCall($expr->class->getAttribute('resolvedName'))) {
+        if (!$expr->class->hasAttribute('resolvedName')) {
+            return;
+        }
+
+        $classOrInterface = $expr->class->getAttribute('resolvedName');
+
+        if (null === $classOrInterface) {
+            return;
+        }
+
+        if (self::isServiceLocatorCall($classOrInterface)) {
             IssueBuffer::accepts(
                 new ContainerUsed(
                     new CodeLocation($statementsSource, $expr)
@@ -103,7 +122,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
      */
     private static function isServiceLocatorCall($resolvedName): bool
     {
-        if (null === $resolvedName) {
+        if (in_array($resolvedName, self::$whiteList)) {
             return false;
         }
 

@@ -20,9 +20,12 @@ Feature: Container Used
     Given I have the following code
     """
     <?php
+
+    namespace Kafkiansky\ServiceLocatorInterrupter\Tests\_run;
+
     final class SomeService
     {
-       public function do(<injectedContainer> $container, string $name): void
+       public function do(<injectedContainer> $container): void
        {
        }
     }
@@ -49,6 +52,9 @@ Feature: Container Used
     Given I have the following code
     """
     <?php
+
+    namespace Kafkiansky\ServiceLocatorInterrupter\Tests\_run;
+
     final class SomeService
     {
        public function do(): void
