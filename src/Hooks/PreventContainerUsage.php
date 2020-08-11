@@ -145,12 +145,15 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
             return $isContainer;
         };
 
-        if ($classParents = class_parents($resolvedName)) {
-            return $instanceOfContainer($classParents, self::$containerClasses);
-        }
+        try {
+            if ($classParents = class_parents($resolvedName)) {
+                return $instanceOfContainer($classParents, self::$containerClasses);
+            }
 
-        if ($classImplements = class_implements($resolvedName)) {
-            return $instanceOfContainer($classImplements, self::$containerInterfaces);
+            if ($classImplements = class_implements($resolvedName)) {
+                return $instanceOfContainer($classImplements, self::$containerInterfaces);
+            }
+        } catch (\Throwable | \Error $error) {
         }
 
         return false;
