@@ -20,14 +20,14 @@
     }
   },
   "require": {
-    "php": "^7.1",
+    "php": "^7.1 || ^8.0",
     "ext-simplexml": "*",
-    "vimeo/psalm": "^3.13"
+    "vimeo/psalm": "^4.3.0"
   },
   "require-dev": {
-    "laravel/framework": "^7.24",
+    "laravel/framework": "^7.0 || ^8.0",
     "phpunit/phpunit": "^8.0",
-    "weirdan/codeception-psalm-module": "^0.8.0"
+    "weirdan/codeception-psalm-module": "^0.13.0"
   },
   "config": {
     "sort-packages": true,
