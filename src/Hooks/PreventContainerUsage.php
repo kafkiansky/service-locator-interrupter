@@ -47,29 +47,30 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
      */
     public static function afterStatementAnalysis(
         Node\FunctionLike $stmt,
-        FunctionLikeStorage $classLikeStorage,
-        StatementsSource $statementsSource,
+        FunctionLikeStorage $classlike_storage,
+        StatementsSource $statements_source,
         Codebase $codebase,
-        array &$fileReplacements = []
-    ): void {
-        if (!$stmt instanceof Node\Stmt\ClassMethod) {
-            return;
-        }
+        array &$file_replacements = []
+    ): ?bool {
 
-        /** @var Node\Param $param */
-        foreach ($stmt->params as $param) {
-            if (
-                $param->type instanceof Node\Name
-                && self::isServiceLocatorCall($param->type->getAttribute('resolvedName'))
-            ) {
-                IssueBuffer::accepts(
-                    new ContainerUsed(
-                        new CodeLocation($statementsSource, $param)
-                    ),
-                    $statementsSource->getSuppressedIssues()
-                );
+        if ($stmt instanceof Node\Stmt\ClassMethod) {
+            /** @var Node\Param $param */
+            foreach ($stmt->params as $param) {
+                if (
+                    $param->type instanceof Node\Name
+                    && self::isServiceLocatorCall($param->type->getAttribute('resolvedName'))
+                ) {
+                    IssueBuffer::accepts(
+                        new ContainerUsed(
+                            new CodeLocation($statements_source, $param)
+                        ),
+                        $statements_source->getSuppressedIssues()
+                    );
+                }
             }
         }
+
+        return null;
     }
 
     /**
@@ -78,28 +79,27 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     public static function afterExpressionAnalysis(
         Expr $expr,
         Context $context,
-        StatementsSource $statementsSource,
+        StatementsSource $statements_source,
         Codebase $codebase,
-        array &$fileReplacements = []
-    ): void {
-        if (!$expr instanceof Expr\StaticCall) {
-            return;
+        array &$file_replacements = []
+    ): ?bool {
+
+        if ($expr instanceof Expr\StaticCall) {
+            if ($expr->class->hasAttribute('resolvedName')) {
+                $classOrInterface = $expr->class->getAttribute('resolvedName');
+
+                if (self::isServiceLocatorCall($classOrInterface)) {
+                    IssueBuffer::accepts(
+                        new ContainerUsed(
+                            new CodeLocation($statements_source, $expr)
+                        ),
+                        $statements_source->getSuppressedIssues()
+                    );
+                }
+            }
         }
 
-        if (!$expr->class->hasAttribute('resolvedName')) {
-            return;
-        }
-
-        $classOrInterface = $expr->class->getAttribute('resolvedName');
-
-        if (self::isServiceLocatorCall($classOrInterface)) {
-            IssueBuffer::accepts(
-                new ContainerUsed(
-                    new CodeLocation($statementsSource, $expr)
-                ),
-                $statementsSource->getSuppressedIssues()
-            );
-        }
+        return null;
     }
 
     /**

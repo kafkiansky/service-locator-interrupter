@@ -28,22 +28,23 @@ final class PreventFacadeCall implements AfterExpressionAnalysisInterface
     public static function afterExpressionAnalysis(
         Expr $expr,
         Context $context,
-        StatementsSource $statementsSource,
+        StatementsSource $statements_source,
         Codebase $codebase,
-        array &$fileReplacements = []
-    ): void {
-        if (!$expr instanceof Expr\StaticCall) {
-            return;
+        array &$file_replacements = []
+    ): ?bool {
+
+        if ($expr instanceof Expr\StaticCall) {
+            if (self::isFacadeCall($expr->class->getAttribute('resolvedName'))) {
+                IssueBuffer::accepts(
+                    new FacadeCalled(
+                        new CodeLocation($statements_source, $expr)
+                    ),
+                    $statements_source->getSuppressedIssues()
+                );
+            }
         }
 
-        if (self::isFacadeCall($expr->class->getAttribute('resolvedName'))) {
-            IssueBuffer::accepts(
-                new FacadeCalled(
-                    new CodeLocation($statementsSource, $expr)
-                ),
-                $statementsSource->getSuppressedIssues()
-            );
-        }
+        return null;
     }
 
     /**

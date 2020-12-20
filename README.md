@@ -18,9 +18,30 @@
 
 Install this package with Composer:
 
-```bash
-composer require kafkiansky/service-locator-interrupter "1.0.4"
-```
+<table>
+<thead>
+    <th>PHP Version</th>
+    <th>Package Version</th>
+</thead>
+<tbody>
+    <tr>
+        <td>
+            <b>PHP ^7.1</b>
+        </td>
+        <td>
+            <code>composer require kafkiansky/service-locator-interrupter "1.0.4" --dev</code>
+        </td> 
+    </tr>
+    <tr>
+        <td>
+            <b>PHP ^8.0</b>
+        </td>
+        <td>
+            <code>composer require kafkiansky/service-locator-interrupter "2.0" --dev</code>
+        </td> 
+    </tr>
+</tbody>
+</table>
 
 ## WHY
 Laravel-like developers prefer to use some kinds of ioc bad practices.

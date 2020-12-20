@@ -22,22 +22,20 @@ use Psalm\StatementsSource;
 
 final class PreventHelpersUsage implements AfterEveryFunctionCallAnalysisInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function afterEveryFunctionCallAnalysis(
         FuncCall $expr,
-        string $functionId,
+        string $function_id,
         Context $context,
-        StatementsSource $statementsSource,
+        StatementsSource $statements_source,
         Codebase $codebase
     ): void {
+
         if (self::isServiceLocatorHelperCall($expr->name->toString())) {
             IssueBuffer::accepts(
                 new HelperUsed(
-                    new CodeLocation($statementsSource, $expr)
+                    new CodeLocation($statements_source, $expr)
                 ),
-                $statementsSource->getSuppressedIssues()
+                $statements_source->getSuppressedIssues()
             );
         }
     }
