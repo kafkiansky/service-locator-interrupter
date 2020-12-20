@@ -124,7 +124,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
 
             while ($parent = $reflection->getParentClass()) {
                 $parentsClass[] = $parent->getName();
-                $reflection     = $parent;
+                $reflection = $parent;
             }
 
             if (self::instanceOfContainer($parentsClass, self::$containerClasses)) {
