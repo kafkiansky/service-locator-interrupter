@@ -32,7 +32,6 @@ final class PreventFacadeCall implements AfterExpressionAnalysisInterface
         Codebase $codebase,
         array &$file_replacements = []
     ): ?bool {
-
         if ($expr instanceof Expr\StaticCall) {
             if (self::isFacadeCall($expr->class->getAttribute('resolvedName'))) {
                 IssueBuffer::accepts(

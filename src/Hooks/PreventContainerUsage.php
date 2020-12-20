@@ -52,7 +52,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
         Codebase $codebase,
         array &$file_replacements = []
     ): ?bool {
-
         if ($stmt instanceof Node\Stmt\ClassMethod) {
             /** @var Node\Param $param */
             foreach ($stmt->params as $param) {
@@ -83,7 +82,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
         Codebase $codebase,
         array &$file_replacements = []
     ): ?bool {
-
         if ($expr instanceof Expr\StaticCall) {
             if ($expr->class->hasAttribute('resolvedName')) {
                 $classOrInterface = $expr->class->getAttribute('resolvedName');
