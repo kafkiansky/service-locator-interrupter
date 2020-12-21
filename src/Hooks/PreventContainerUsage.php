@@ -57,6 +57,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
             foreach ($stmt->params as $param) {
                 if (
                     $param->type instanceof Node\Name
+                    && $param->type->hasAttribute('resolvedName')
                     && self::isServiceLocatorCall($param->type->getAttribute('resolvedName'))
                 ) {
                     IssueBuffer::accepts(
