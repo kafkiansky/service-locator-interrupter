@@ -37,7 +37,7 @@ Install this package with Composer:
             <b>PHP ^8.0</b>
         </td>
         <td>
-            <code>composer require kafkiansky/service-locator-interrupter "2.0" --dev</code>
+            <code>composer require kafkiansky/service-locator-interrupter "2.0.1" --dev</code>
         </td> 
     </tr>
 </tbody>
