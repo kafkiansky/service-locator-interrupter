@@ -72,7 +72,7 @@ Feature: Helpers call
     {
       public function do(): void
       {
-         $output = array_map(function (int $el) { return $el + 1; }, [1, 2, 3]);
+         $_output = array_map(function (int $el) { return $el + 1; }, [1, 2, 3]);
       }
     }
     """

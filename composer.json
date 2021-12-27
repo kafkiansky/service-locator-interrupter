@@ -22,16 +22,19 @@
   "require": {
     "php": "^7.1 || ^8.0",
     "ext-simplexml": "*",
-    "vimeo/psalm": "^4.3.0"
+    "vimeo/psalm": "^4.16"
   },
   "require-dev": {
     "laravel/framework": "^7.0 || ^8.0",
-    "phpunit/phpunit": "^8.0",
+    "phpunit/phpunit": "^9.5",
     "weirdan/codeception-psalm-module": "^0.13.0"
   },
   "config": {
     "sort-packages": true,
-    "process-timeout": 0
+    "process-timeout": 0,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true
+    }
   },
   "extra": {
     "psalm": {

@@ -78,7 +78,7 @@ Feature: Facade call
     {
       public function do(): void
       {
-         $errors = \DateTimeImmutable::getLastErrors();
+         $_errors = \DateTimeImmutable::getLastErrors();
       }
     }
     """
