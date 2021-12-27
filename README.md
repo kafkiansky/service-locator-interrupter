@@ -40,6 +40,14 @@ Install this package with Composer:
             <code>composer require kafkiansky/service-locator-interrupter "2.0.1" --dev</code>
         </td> 
     </tr>
+    <tr>
+        <td>
+            <b>PHP <= 8.1</b>
+        </td>
+        <td>
+            <code>composer require kafkiansky/service-locator-interrupter "2.1.0" --dev</code>
+        </td> 
+    </tr>
 </tbody>
 </table>
 
