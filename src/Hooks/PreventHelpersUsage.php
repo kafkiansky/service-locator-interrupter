@@ -12,29 +12,23 @@ declare(strict_types=1);
 namespace Kafkiansky\ServiceLocatorInterrupter\Hooks;
 
 use Kafkiansky\ServiceLocatorInterrupter\Issues\HelperUsed;
-use PhpParser\Node\Expr\FuncCall;
-use Psalm\Codebase;
 use Psalm\CodeLocation;
-use Psalm\Context;
 use Psalm\IssueBuffer;
-use Psalm\Plugin\Hook\AfterEveryFunctionCallAnalysisInterface;
-use Psalm\StatementsSource;
+use Psalm\Plugin\EventHandler\AfterEveryFunctionCallAnalysisInterface;
+use Psalm\Plugin\EventHandler\Event\AfterEveryFunctionCallAnalysisEvent;
 
 final class PreventHelpersUsage implements AfterEveryFunctionCallAnalysisInterface
 {
-    public static function afterEveryFunctionCallAnalysis(
-        FuncCall $expr,
-        string $function_id,
-        Context $context,
-        StatementsSource $statements_source,
-        Codebase $codebase
-    ): void {
+    public static function afterEveryFunctionCallAnalysis(AfterEveryFunctionCallAnalysisEvent $event): void
+    {
+        $expr = $event->getExpr();
+
         if (self::isServiceLocatorHelperCall($expr->name->toString())) {
             IssueBuffer::accepts(
                 new HelperUsed(
-                    new CodeLocation($statements_source, $expr)
+                    new CodeLocation($event->getStatementsSource(), $expr)
                 ),
-                $statements_source->getSuppressedIssues()
+                $event->getStatementsSource()->getSuppressedIssues()
             );
         }
     }

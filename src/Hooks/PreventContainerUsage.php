@@ -14,21 +14,19 @@ namespace Kafkiansky\ServiceLocatorInterrupter\Hooks;
 use Kafkiansky\ServiceLocatorInterrupter\Issues\ContainerUsed;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use Psalm\Codebase;
 use Psalm\CodeLocation;
-use Psalm\Context;
 use Psalm\IssueBuffer;
-use Psalm\Plugin\Hook\AfterExpressionAnalysisInterface;
-use Psalm\Plugin\Hook\AfterFunctionLikeAnalysisInterface;
-use Psalm\StatementsSource;
-use Psalm\Storage\FunctionLikeStorage;
+use Psalm\Plugin\EventHandler\AfterExpressionAnalysisInterface;
+use Psalm\Plugin\EventHandler\AfterFunctionLikeAnalysisInterface;
+use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
+use Psalm\Plugin\EventHandler\Event\AfterFunctionLikeAnalysisEvent;
 
 final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface, AfterExpressionAnalysisInterface
 {
     /**
      * @var array of container classes that laravel has.
      */
-    private static $containerClasses = [
+    private static array $containerClasses = [
         'Illuminate\Container\Container',
         'Illuminate\Foundation\Application',
     ];
@@ -36,7 +34,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     /**
      * @var array of container interfaces that laravel use.
      */
-    private static $containerInterfaces = [
+    private static array $containerInterfaces = [
         'Psr\Container\ContainerInterface',
         'Illuminate\Contracts\Container\Container',
         'Illuminate\Contracts\Foundation\Application',
@@ -45,13 +43,10 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     /**
      * {@inheritdoc}
      */
-    public static function afterStatementAnalysis(
-        Node\FunctionLike $stmt,
-        FunctionLikeStorage $classlike_storage,
-        StatementsSource $statements_source,
-        Codebase $codebase,
-        array &$file_replacements = []
-    ): ?bool {
+    public static function afterStatementAnalysis(AfterFunctionLikeAnalysisEvent $event): ?bool
+    {
+        $stmt = $event->getStmt();
+
         if ($stmt instanceof Node\Stmt\ClassMethod) {
             /** @var Node\Param $param */
             foreach ($stmt->params as $param) {
@@ -62,9 +57,9 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
                 ) {
                     IssueBuffer::accepts(
                         new ContainerUsed(
-                            new CodeLocation($statements_source, $param)
+                            new CodeLocation($event->getStatementsSource(), $param)
                         ),
-                        $statements_source->getSuppressedIssues()
+                        $event->getStatementsSource()->getSuppressedIssues()
                     );
                 }
             }
@@ -76,13 +71,10 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     /**
      * {@inheritdoc}
      */
-    public static function afterExpressionAnalysis(
-        Expr $expr,
-        Context $context,
-        StatementsSource $statements_source,
-        Codebase $codebase,
-        array &$file_replacements = []
-    ): ?bool {
+    public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
+    {
+        $expr = $event->getExpr();
+
         if ($expr instanceof Expr\StaticCall) {
             if ($expr->class->hasAttribute('resolvedName')) {
                 $classOrInterface = $expr->class->getAttribute('resolvedName');
@@ -90,9 +82,9 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
                 if (self::isServiceLocatorCall($classOrInterface)) {
                     IssueBuffer::accepts(
                         new ContainerUsed(
-                            new CodeLocation($statements_source, $expr)
+                            new CodeLocation($event->getStatementsSource(), $expr)
                         ),
-                        $statements_source->getSuppressedIssues()
+                        $event->getStatementsSource()->getSuppressedIssues()
                     );
                 }
             }
@@ -150,8 +142,6 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
                 $isContainer = true;
                 break;
             }
-
-            continue;
         }
 
         return $isContainer;
