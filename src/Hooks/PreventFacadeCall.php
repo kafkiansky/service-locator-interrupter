@@ -13,32 +13,27 @@ namespace Kafkiansky\ServiceLocatorInterrupter\Hooks;
 
 use Kafkiansky\ServiceLocatorInterrupter\Issues\FacadeCalled;
 use PhpParser\Node\Expr;
-use Psalm\Codebase;
 use Psalm\CodeLocation;
-use Psalm\Context;
 use Psalm\IssueBuffer;
-use Psalm\Plugin\Hook\AfterExpressionAnalysisInterface;
-use Psalm\StatementsSource;
+use Psalm\Plugin\EventHandler\AfterExpressionAnalysisInterface;
+use Psalm\Plugin\EventHandler\Event\AfterExpressionAnalysisEvent;
 
 final class PreventFacadeCall implements AfterExpressionAnalysisInterface
 {
     /**
      * {@inheritdoc}
      */
-    public static function afterExpressionAnalysis(
-        Expr $expr,
-        Context $context,
-        StatementsSource $statements_source,
-        Codebase $codebase,
-        array &$file_replacements = []
-    ): ?bool {
+    public static function afterExpressionAnalysis(AfterExpressionAnalysisEvent $event): ?bool
+    {
+        $expr = $event->getExpr();
+
         if ($expr instanceof Expr\StaticCall) {
             if (self::isFacadeCall($expr->class->getAttribute('resolvedName'))) {
                 IssueBuffer::accepts(
                     new FacadeCalled(
-                        new CodeLocation($statements_source, $expr)
+                        new CodeLocation($event->getStatementsSource(), $expr)
                     ),
-                    $statements_source->getSuppressedIssues()
+                    $event->getStatementsSource()->getSuppressedIssues()
                 );
             }
         }
