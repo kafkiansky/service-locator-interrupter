@@ -22,7 +22,7 @@
   "require": {
     "php": ">=7.4 || <= 8.1",
     "ext-simplexml": "*",
-    "vimeo/psalm": "^4.16"
+    "vimeo/psalm": ">= 4.0"
   },
   "require-dev": {
     "laravel/framework": "^7.0 || ^8.0",
