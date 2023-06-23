@@ -7,5 +7,3 @@ tests              export-ignore
 phpunit.xml        export-ignore
 .scrutinizer.yml   export-ignore
 codeception.yml    export-ignore
-docker             export-ignore
-docker-compose.yml export-ignore

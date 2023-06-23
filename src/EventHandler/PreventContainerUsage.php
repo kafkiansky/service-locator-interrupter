@@ -1,15 +1,8 @@
 <?php
 
-/**
- * This file is part of service-locator-interrupter package.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
-namespace Kafkiansky\ServiceLocatorInterrupter\Hooks;
+namespace Kafkiansky\ServiceLocatorInterrupter\EventHandler;
 
 use Kafkiansky\ServiceLocatorInterrupter\Issues\ContainerUsed;
 use PhpParser\Node;
@@ -23,21 +16,17 @@ use Psalm\Plugin\EventHandler\Event\AfterFunctionLikeAnalysisEvent;
 
 final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface, AfterExpressionAnalysisInterface
 {
-    /**
-     * @var array of container classes that laravel has.
-     */
+    /** @var class-string[] */
     private static array $containerClasses = [
-        'Illuminate\Container\Container',
-        'Illuminate\Foundation\Application',
+        \Illuminate\Container\Container::class,
+        \Illuminate\Foundation\Application::class,
     ];
 
-    /**
-     * @var array of container interfaces that laravel use.
-     */
+    /** @psalm-var interface-string[] */
     private static array $containerInterfaces = [
-        'Psr\Container\ContainerInterface',
-        'Illuminate\Contracts\Container\Container',
-        'Illuminate\Contracts\Foundation\Application',
+        \Psr\Container\ContainerInterface::class,
+        \Illuminate\Contracts\Container\Container::class,
+        \Illuminate\Contracts\Foundation\Application::class,
     ];
 
     /**
@@ -48,19 +37,19 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
         $stmt = $event->getStmt();
 
         if ($stmt instanceof Node\Stmt\ClassMethod) {
-            /** @var Node\Param $param */
             foreach ($stmt->params as $param) {
-                if (
-                    $param->type instanceof Node\Name
-                    && $param->type->hasAttribute('resolvedName')
-                    && self::isServiceLocatorCall($param->type->getAttribute('resolvedName'))
-                ) {
-                    IssueBuffer::accepts(
-                        new ContainerUsed(
-                            new CodeLocation($event->getStatementsSource(), $param)
-                        ),
-                        $event->getStatementsSource()->getSuppressedIssues()
-                    );
+                if ($param->type instanceof Node\Name && $param->type->hasAttribute('resolvedName')) {
+                    /** @psalm-var class-string|interface-string $classOrInterface */
+                    $classOrInterface = $param->type->getAttribute('resolvedName');
+
+                    if (self::isServiceLocatorCall($classOrInterface)) {
+                        IssueBuffer::accepts(
+                            new ContainerUsed(
+                                new CodeLocation($event->getStatementsSource(), $param)
+                            ),
+                            $event->getStatementsSource()->getSuppressedIssues(),
+                        );
+                    }
                 }
             }
         }
@@ -77,6 +66,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
 
         if ($expr instanceof Expr\StaticCall) {
             if ($expr->class->hasAttribute('resolvedName')) {
+                /** @psalm-var class-string|interface-string $classOrInterface */
                 $classOrInterface = $expr->class->getAttribute('resolvedName');
 
                 if (self::isServiceLocatorCall($classOrInterface)) {
@@ -84,7 +74,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
                         new ContainerUsed(
                             new CodeLocation($event->getStatementsSource(), $expr)
                         ),
-                        $event->getStatementsSource()->getSuppressedIssues()
+                        $event->getStatementsSource()->getSuppressedIssues(),
                     );
                 }
             }
@@ -94,9 +84,7 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
     }
 
     /**
-     * @param $resolvedName
-     *
-     * @return bool
+     * @psalm-param class-string|interface-string $resolvedName
      */
     private static function isServiceLocatorCall($resolvedName): bool
     {
@@ -121,17 +109,15 @@ final class PreventContainerUsage implements AfterFunctionLikeAnalysisInterface,
             if (self::instanceOfContainer($parentsClass, self::$containerClasses)) {
                 return true;
             }
-        } catch (\ReflectionException $exception) {
+        } catch (\ReflectionException) {
         }
 
         return false;
     }
 
     /**
-     * @param array $parents
-     * @param array $declaringContainers
-     *
-     * @return bool
+     * @param string[] $parents
+     * @psalm-param class-string[]|interface-string[] $declaringContainers
      */
     private static function instanceOfContainer(array $parents, array $declaringContainers): bool
     {

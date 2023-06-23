@@ -172,8 +172,28 @@ final class ImplementedLaravelContainer implements Container
     /**
      * {@inheritdoc}
      */
-    public function has($id)
+    public function has($id): bool
     {
-        // TODO: Implement has() method.
+        return true;
+    }
+
+    public function bindMethod($method, $callback)
+    {
+        // TODO: Implement bindMethod() method.
+    }
+
+    public function scoped($abstract, $concrete = null)
+    {
+        // TODO: Implement scoped() method.
+    }
+
+    public function scopedIf($abstract, $concrete = null)
+    {
+        // TODO: Implement scopedIf() method.
+    }
+
+    public function beforeResolving($abstract, Closure $callback = null)
+    {
+        // TODO: Implement beforeResolving() method.
     }
 }

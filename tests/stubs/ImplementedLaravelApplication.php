@@ -60,7 +60,7 @@ final class ImplementedLaravelApplication implements Application
     /**
      * {@inheritdoc}
      */
-    public function storagePath()
+    public function storagePath($path = '')
     {
         // TODO: Implement storagePath() method.
     }
@@ -388,8 +388,53 @@ final class ImplementedLaravelApplication implements Application
     /**
      * {@inheritdoc}
      */
-    public function has($id)
+    public function has($id): bool
     {
-        // TODO: Implement has() method.
+        return true;
+    }
+
+    public function langPath($path = '')
+    {
+        // TODO: Implement langPath() method.
+    }
+
+    public function publicPath($path = '')
+    {
+        // TODO: Implement publicPath() method.
+    }
+
+    public function hasDebugModeEnabled()
+    {
+        // TODO: Implement hasDebugModeEnabled() method.
+    }
+
+    public function maintenanceMode()
+    {
+        // TODO: Implement maintenanceMode() method.
+    }
+
+    public function terminating($callback)
+    {
+        // TODO: Implement terminating() method.
+    }
+
+    public function bindMethod($method, $callback)
+    {
+        // TODO: Implement bindMethod() method.
+    }
+
+    public function scoped($abstract, $concrete = null)
+    {
+        // TODO: Implement scoped() method.
+    }
+
+    public function scopedIf($abstract, $concrete = null)
+    {
+        // TODO: Implement scopedIf() method.
+    }
+
+    public function beforeResolving($abstract, Closure $callback = null)
+    {
+        // TODO: Implement beforeResolving() method.
     }
 }
