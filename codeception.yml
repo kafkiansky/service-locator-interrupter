@@ -1,4 +1,4 @@
-namespace: Psalm\PhpUnitPlugin\Tests
+namespace: Kafkiansky\ServiceLocatorInterrupter\Tests
 
 paths:
   tests: tests/acceptance

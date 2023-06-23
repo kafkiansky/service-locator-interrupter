@@ -19,8 +19,8 @@ final class ImplementedPsrContainer implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function has($id)
+    public function has($id): bool
     {
-        // TODO: Implement has() method.
+        return true;
     }
 }

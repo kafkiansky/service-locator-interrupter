@@ -1,12 +1,13 @@
 <?php
 
-namespace Psalm\PhpUnitPlugin\Tests;
+declare(strict_types=1);
+
+namespace Kafkiansky\ServiceLocatorInterrupter\Tests;
 
 /**
- * Inherited Methods.
- *
- * @method void wantToTest($text)
+ * Inherited Methods
  * @method void wantTo($text)
+ * @method void wantToTest($text)
  * @method void execute($callable)
  * @method void expectTo($prediction)
  * @method void expect($prediction)
@@ -14,15 +15,15 @@ namespace Psalm\PhpUnitPlugin\Tests;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method void pause()
+ * @method void pause($vars = [])
  *
  * @SuppressWarnings(PHPMD)
- */
+*/
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
     /**
-     * Define custom actions here.
+     * Define custom actions here
      */
 }

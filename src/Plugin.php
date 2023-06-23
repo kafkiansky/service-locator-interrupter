@@ -1,33 +1,37 @@
 <?php
 
-/**
- * This file is part of service-locator-interrupter package.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 declare(strict_types=1);
 
 namespace Kafkiansky\ServiceLocatorInterrupter;
 
+use Psalm\Plugin\EventHandler\AfterEveryFunctionCallAnalysisInterface;
+use Psalm\Plugin\EventHandler\AfterExpressionAnalysisInterface;
+use Psalm\Plugin\EventHandler\AfterFunctionLikeAnalysisInterface;
 use Psalm\Plugin\PluginEntryPointInterface;
 use Psalm\Plugin\RegistrationInterface;
-use SimpleXMLElement;
 
+/**
+ * @api
+ */
 final class Plugin implements PluginEntryPointInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(RegistrationInterface $api, SimpleXMLElement $config = null): void
+    public function __invoke(RegistrationInterface $registration, ?\SimpleXMLElement $config = null): void
     {
-        require_once __DIR__.'/Hooks/PreventContainerUsage.php';
-        require_once __DIR__.'/Hooks/PreventFacadeCall.php';
-        require_once __DIR__.'/Hooks/PreventHelpersUsage.php';
+        foreach (self::hooks() as $hook) {
+            /** @psalm-suppress UnresolvableInclude */
+            require_once __DIR__ . '/' . str_replace([__NAMESPACE__, '\\'], ['', '/'], $hook) . '.php';
 
-        $api->registerHooksFromClass(Hooks\PreventContainerUsage::class);
-        $api->registerHooksFromClass(Hooks\PreventFacadeCall::class);
-        $api->registerHooksFromClass(Hooks\PreventHelpersUsage::class);
+            $registration->registerHooksFromClass($hook);
+        }
+    }
+
+    /**
+     * @return iterable<class-string<AfterFunctionLikeAnalysisInterface>|class-string<AfterExpressionAnalysisInterface>|class-string<AfterEveryFunctionCallAnalysisInterface>>
+     */
+    private static function hooks(): iterable
+    {
+        yield EventHandler\PreventContainerUsage::class;
+        yield EventHandler\PreventFacadeCall::class;
+        yield EventHandler\PreventHelpersUsage::class;
     }
 }

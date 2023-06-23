@@ -34,35 +34,58 @@ Feature: Helpers call
       | HelperUsed | Helper uses container as service locator, use dependency injection instead. |
 
     Examples:
-      |func         | argument         |
-      |app          | \stdClass::class |
-      |resolve      | \stdClass::class |
-      |event        | new \stdClass()  |
-      |info         | 'Some info log'  |
-      |logger       | 'Some log text'  |
-      |logs         | null             |
-      |abort        | 404              |
-      |abort_if     | true , 404       |
-      |abort_unless | true , 404       |
-      |auth         | 'web'            |
-      |back         | 302              |
-      |broadcast    | null             |
-      |cache        | null             |
-      |config       | 'app.some'       |
-      |cookie       | 'x-developer'    |
-      |dispatch     | new \stdClass()  |
-      |dispatch_now | new \stdClass()  |
-      |redirect     | '/dev/null'      |
-      |report       | new \Exception() |
-      |request      | 'key'            |
-      |response     | 'null content'   |
-      |route        | 'home'           |
-      |session      | 'user_id'        |
-      |trans        | 'service_locator'|
-      |trans_choice | 'key', 2         |
-      |url          | 'localhost'      |
-      |validator    | 'di !== helper'  |
-      |view         | 'narrow'         |
+      |func         | argument             |
+      |app          | \stdClass::class     |
+      |resolve      | \stdClass::class     |
+      |event        | new \stdClass()      |
+      |info         | 'Some info log'      |
+      |logger       | 'Some log text'      |
+      |logs         | null                 |
+      |abort        | 404                  |
+      |abort_if     | true , 404           |
+      |abort_unless | true , 404           |
+      |auth         | 'web'                |
+      |back         | 302                  |
+      |broadcast    | null                 |
+      |cache        | null                 |
+      |config       | 'app.some'           |
+      |cookie       | 'x-developer'        |
+      |dispatch     | new \stdClass()      |
+      |dispatch_sync| new \stdClass()      |
+      |redirect     | '/dev/null'          |
+      |report       | new \Exception()     |
+      |request      | 'key'                |
+      |response     | 'null content'       |
+      |route        | 'home'               |
+      |session      | 'user_id'            |
+      |trans        | 'service_locator'    |
+      |trans_choice | 'key', 2             |
+      |url          | 'localhost'          |
+      |validator    | 'di !== helper'      |
+      |view         | 'narrow'             |
+      |encrypt      | 'value'              |
+      |decrypt      | 'value'              |
+      |action       | 'test'               |
+      |app_path     | 'storage'            |
+      |asset        | 'css'                |
+      |base_path    | ''                   |
+      |bcrypt       | 'value'              |
+      |config_path  | 'app.providers'      |
+      |csrf_token   |                      |
+      |database_path| ''                   |
+      |lang_path    | ''                   |
+      |old          | 'key'                |
+      |policy       | \stdClass::class     |
+      |precognitive |null                  |
+      |public_path  |''                    |
+      |report_if    |true, new \Exception()|
+      |report_unless|true, new \Exception()|
+      |resource_path|''                    |
+      |secure_asset |''                    |
+      |secure_url   |''                    |
+      |storage_path |''                    |
+      |to_route     |'main'                |
+      |__           |'key'                 |
 
   Scenario: Assert that we can use simple function and psalm no see errors.
     Given I have the following code
