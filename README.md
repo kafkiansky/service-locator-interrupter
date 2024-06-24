@@ -56,12 +56,20 @@ Install this package with Composer:
             <code>composer require kafkiansky/service-locator-interrupter "^4.0" --dev</code>
         </td> 
     </tr>
+    <tr>
+        <td>
+            <b>PHP ^8.2 && Laravel ^11.x</b>
+        </td>
+        <td>
+            <code>composer require kafkiansky/service-locator-interrupter "^5.0" --dev</code>
+        </td> 
+    </tr>
 </tbody>
 </table>
 
 ## WHY
 Laravel-like developers prefer to use some kinds of ioc bad practices.
-In example: facades, helpers method, container injection and container instances creation anywhere: controllers, services, routes and even in models (wtf?).
+In example: facades, helpers method, container injection and container instances creation anywhere: controllers, services, routes and even in models.
 You need inject necessary services in method and constructor, not call container to do it for you.
 Any services **must has** it own contract, container injection - it's not legal contract, it's hack.
 
